@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head></head>
+	<body>
+		<div th:fragment="members">
+			<br/>
+			<h2 class="text-dark">Member Lookup Result</h2>
+			<div class="table-responsive">
+				<label class="text-danger">You can sort records by clicking on any title of the table.</label>
+				<table class="table table-hover" id="sort">
+					<thead class="table-primary">
+						<tr>
+							<th>Actions</th>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Phone</th>
+							<th>Email</th>
+							<th>Address</th>
+							<th>Member Since</th>
+							<th>Membership Expiry Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="member : ${members}">
+							<td>
+								<!-- If member expired -->
+								<div class="btn-group" th:if="${member.membershipExpired}">
+									<button type="button" th:attr="onclick=|window.location='/receipt?memberId=${member.id}'|" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Add Receipt">
+				                  		<i class="bi bi-file-earmark-plus"></i>
+				                	</button>
+									<button type="button" th:attr="onclick=|window.location='/member/${member.id}'|" class="btn btn-outline-danger" data-bs-toggle="tooltip" title="Member Management">
+				                  		<i class="bi bi-person"></i>
+				                	</button>
+								</div>
+								<!-- Else -->
+								<div class="btn-group" th:unless="${member.membershipExpired}">
+									<button type="button" th:attr="onclick=|window.location='/receipt?memberId=${member.id}'|" class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="Add Receipt">
+				                  		<i class="bi bi-file-earmark-plus"></i>
+				                	</button>
+									<button type="button" th:attr="onclick=|window.location='/member/${member.id}'|" class="btn btn-outline-secondary" data-bs-toggle="tooltip" title="Member Management">
+				                  		<i class="bi bi-person"></i>
+				                	</button>
+								</div>
+							</td>
+							<td th:text="${member.id}"></td>
+							<td th:text="${member.firstName + ' ' + member.lastName}"></td>
+							<td th:text="${member.phone}"></td>
+							<td th:text="${member.email}"></td>
+							<td th:text="${member.street + ', ' + member.city + ', ' + member.state + ', ' + member.zip}"></td>
+							<td th:text="${#temporals.format(member.memberSince, 'yyyy/MM/dd')}"></td>
+							<!-- If member expired -->
+							<td th:text="${#temporals.format(member.membershipExpiryDate, 'yyyy/MM/dd')}" th:if="${member.membershipExpired}" class="text-danger"></td>
+							<!-- Else -->
+							<td th:text="${#temporals.format(member.membershipExpiryDate, 'yyyy/MM/dd')}" th:unless="${member.membershipExpired}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</body>
+</html>

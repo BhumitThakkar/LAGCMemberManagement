@@ -1,0 +1,34 @@
+Configuration:
+  status: debug
+
+  appenders:
+    Console:
+      name: LogToConsole
+      PatternLayout:
+        Pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS z} [%-5p] %X{clientIP, threadContextUUID} %c:%L - %msg%n"
+
+    RollingFile:
+      - name: LogToRollingFile
+        fileName: logs/LAGCMemberManagement.log
+        filePattern: "logs/$${date:yyyy-MM-dd}/EmailingService-%d{yyyy-MM-dd}-%i.log.gz"
+        PatternLayout:
+          Pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS z} [%-5p] %X{clientIP, threadContextUUID} %c:%L - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 10MB
+        DefaultRollOverStrategy:
+          max: 10
+
+  Loggers:
+    logger:
+      - name: us.lagc
+        level: debug
+        additivity: false
+        AppenderRef:
+          - ref: LogToConsole
+          - ref: LogToRollingFile
+
+    Root:
+      level: error
+      AppenderRef:
+        ref: LogToConsole

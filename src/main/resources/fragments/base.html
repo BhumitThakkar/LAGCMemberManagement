@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/thymleaf-extras-springsecurity5">
+	<head th:fragment="headerTags">
+		<meta charset="ISO-8859-1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Favicon -->
+		<link rel="icon" sizes="72x72" href="/img/logo.png" type="image/png">
+		<!-- For Bootstrap 5 CSS -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+		<!-- For Icons -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" rel="stylesheet"/>
+		<!-- For Bootstrap 5 DataTable CSS  -->
+		<link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+	</head>
+	<body>
+		<div th:fragment="header" id="header" class="mt-2 mb-4 p-2">
+			<p sec:authorize="isAuthenticated()" class="text-danger text-center small">STRICTLY: do not use browser buttons(back/refresh) or url to navigate instead click header to go to home and start again.</p>
+			<p sec:authorize="isAuthenticated()" class="text-danger text-center small">NOTE: user actions are recorded.</p>
+			<div class="btn btn-primary d-grid" onclick="window.location.href='/member'">
+				<div>
+					<h1>LAGC Member Management System</h1>
+				</div>
+				<a th:href="@{/logout}" sec:authorize="isAuthenticated()" class="mx-auto btn btn-outline-light">Logout</a>
+			</div>
+		</div>
+		
+		
+<!--
+		// if you want all errors on top of page then uncomment | currently they are implemented under each field in html
+
+ 		// Custom Error
+		<div th:if="${error}">
+			<br/>
+		    <ul>
+		        <li class="text-danger" th:text="${error}" />
+		    </ul>
+		</div>
+ 		
+ 		<div th:if="${error} or ${#fields.hasAnyErrors()}" th:fragment="error" id="error">
+			JPA and other Error
+			<div th:if="${#fields.hasAnyErrors()}">
+				<br/>
+			    <ul>
+			        <li class="text-danger" th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+			    </ul>
+		    </div>
+		</div>
+ -->		
+		<!-- Custom Status -->
+		<div class="mt-4" th:if="${error} or ${success} or ${msg} or ${param.error} or ${param.logout}" th:fragment="status" id="status">
+			<!-- Custom Error -->
+			<div class="alert alert-danger" th:if="${error}">
+		        <span th:text="${error}"></span>
+			</div>
+			
+			<div class="alert alert-primary" th:if="${success}">
+				<span th:text="${success}"></span>
+		    </div>
+		    
+			<div class="alert alert-warning" th:if="${msg}">
+				<span th:text="${msg}"></span>
+		    </div>
+
+		    <!-- In Login Page Only -->
+		    <div class="alert alert-danger" th:if="${param.error}">
+		        <span>Invalid Credentials</span>
+			</div>
+			
+		    <!-- After Logout Only -->
+		    <div class="alert alert-primary" th:if="${param.logout}">
+		        <span>Logout Successful</span>
+			</div>
+		</div>
+		
+		<div th:fragment="footer" id="footer">
+			<!-- For Bootstrap 5 JS -->
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+		</div>
+		
+		<div th:fragment="dataTable" id="dataTable">
+			<!-- For DataTable Bootstrap 5 Start -->
+			<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+			<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+			<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+			<script src="/js/lagc.js"></script>
+			<!-- For DataTable Bootstrap 5 End -->
+		</div>
+		
+		<script type="text/javascript">
+		alert("Hi");
+		alert("<%= Session.Timeout %>");
+		var sessionTimeout = "<%= Session.Timeout %>";
+		
+		    function DisplaySessionTimeout() {
+		        sessionTimeout = sessionTimeout - 1;
+		
+		        if (sessionTimeout >= 0)
+		          window.setTimeout("DisplaySessionTimeout()", 5000);
+		        else {
+		            alert("Your current Session is over due to inactivity.");
+		        }
+		    }
+		</script>
+		
+	</body>
+</html>

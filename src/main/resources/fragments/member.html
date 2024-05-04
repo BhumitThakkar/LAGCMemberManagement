@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+	<head></head>
+	<body>
+		<div th:fragment="member">
+			<br/>
+			<h2 class="text-dark" th:text="${member.id}?'Update Member':'Add Member'"></h2>
+			<form th:with="actionUrl=(${member.id}?'/member/update':'/member/add')" th:action="@{${actionUrl}}" method="post">
+				<div class="row" th:object="${member}">
+					
+					<input type="hidden" class="form-control" th:field="*{id}">
+					
+					<!-- Left of Member Form Start -->
+					<div class="col-sm-6">
+		 				<div class="mb-4">
+							<label for="firstName" class="form-label">First Name:</label>
+							<input type="text" class="form-control" th:field="*{firstName}" placeholder="Enter First Name" >
+							<span class="text-danger small" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+						</div>
+							
+						<div class="mb-4">
+							<label for="lastName" class="form-label">Last Name:</label>
+							<input type="text" class="form-control" th:field="*{lastName}" placeholder="Enter Last Name" >
+							<span class="text-danger small" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+						</div>
+							
+						<div class="mb-4">
+							<label for="phone" class="form-label">Phone Number:</label>
+							<input type="number" class="form-control" th:field="*{phone}" placeholder="Enter 10 Digit Phone" min="1000000000" max="9999999999">
+							<span class="text-danger small" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+						</div>
+							
+		 				<div class="mb-4">
+							<label for="email" class="form-label">Email:</label>
+							<input type="email" class="form-control" th:field="*{email}" placeholder="Enter Email" >
+							<span class="text-danger small" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+						</div>
+		
+		 				<div class="mb-4">
+							<label for="isLifeMember" class="form-label">Life Time Member?</label>
+			 				<div th:unless="${member.id}"><!-- So that yes and no can come in 1 line AFTER main label -->
+				 				<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input" th:field="*{isLifeMember}" value="Yes" th:onchange="syncFromLifeMember('isLifeMember1', [[(${lifetimeMembershipExpiryDate})]])">
+									<label for="isLifeMember" class="form-check-label">Yes</label>
+								</div>
+				 				<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input" th:field="*{isLifeMember}" value="No" th:onchange="syncFromLifeMember('isLifeMember2', [[(${annualMembershipExpiryDate})]])">
+									<label for="isLifeMember" class="form-check-label">No</label>
+								</div>
+							</div>
+							<div th:if="${member.id}"><!-- So that yes and no can come in 1 line AFTER main label -->
+								<input type="text" class="form-control" th:field="*{isLifeMember}" readonly="readonly">
+							</div>
+							<span class="text-danger small" th:if="${#fields.hasErrors('isLifeMember')}" th:errors="*{isLifeMember}"></span>
+						</div>
+		
+						<div class="mb-4">
+							<label for="wantEmail" class="form-label">Want Email?</label>
+			 				<div><!-- So that yes and no can come in 1 line AFTER main label -->
+				 				<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input" th:field="*{wantEmail}" value="Yes" >
+									<label for="wantEmail" class="form-check-label">Yes</label>
+								</div>
+				 				<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input" th:field="*{wantEmail}" value="No">
+									<label for="wantEmail" class="form-check-label">No</label>
+								</div>
+							</div>
+							<span class="text-danger small" th:if="${#fields.hasErrors('wantEmail')}" th:errors="*{wantEmail}"></span>
+						</div>
+		
+						<div class="mb-4">
+							<label for="wantMail" class="form-label">Want Mail?</label>
+			 				<div><!-- So that yes and no can come in 1 line AFTER main label -->
+				 				<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input" th:field="*{wantMail}" value="Yes" >
+									<label for="wantMail" class="form-check-label">Yes</label>
+								</div>
+				 				<div class="form-check form-check-inline">
+									<input type="radio" class="form-check-input" th:field="*{wantMail}" value="No">
+									<label for="wantMail" class="form-check-label">No</label>
+								</div>
+							</div>
+							<span class="text-danger small" th:if="${#fields.hasErrors('wantMail')}" th:errors="*{wantMail}"></span>
+						</div>
+					</div>
+					<!-- Left of Member Form End -->
+		
+					<!-- Right of Member Form Start -->
+					<div class="col-sm-6">
+		 				<div class="mb-4">
+							<label for="street" class="form-label">Street:</label>
+							<input type="text" class="form-control" th:field="*{street}" placeholder="Enter Street" >
+							<span class="text-danger small" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></span>
+						</div>
+							
+		 				<div class="mb-4">
+							<label for="city" class="form-label">City:</label>
+							<input type="text" class="form-control" th:field="*{city}" placeholder="Enter City" >
+							<span class="text-danger small" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+						</div>
+						
+		 				<div class="mb-4">
+							<label for="state" class="form-label">State:</label>
+							<select th:field="*{state}" class="form-control">
+								<option th:value="${stateName}" th:each="stateName : ${states}" th:text="${#strings.replace(stateName,'_', ' ')}"></option>
+							</select>
+							<span class="text-danger small" th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
+						</div>
+		
+		 				<div class="mb-4">
+							<label for="zip" class="form-label">Zip Code:</label>
+							<input type="number" class="form-control" th:field="*{zip}" placeholder="Enter 5 Digit Zip Code" >
+								<!-- min="10000" max="99999" maxlength="5"  -->
+							<span class="text-danger small" th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}"></span>
+						</div>
+		
+		 				<div class="mb-4">
+							<label for="memberSince" class="form-label">Member Since:</label>
+							<input type="date" class="form-control" th:field="*{memberSince}" th:unless="${member.id}">
+							<input type="date" class="form-control" th:field="*{memberSince}" th:if="${member.id}" readonly="readonly">
+							<span class="text-danger small" th:if="${#fields.hasErrors('memberSince')}" th:errors="*{memberSince}"></span>
+						</div>
+						
+						<div class="mb-4">
+							<label for="membershipExpiryDate" class="form-label">Membership Expiry Date:</label>
+							<input type="date" class="form-control" th:field="*{membershipExpiryDate}" th:unless="${member.id}">
+							<input type="date" class="form-control" th:field="*{membershipExpiryDate}" th:if="${member.id}" readonly="readonly">
+							<span class="text-danger small" th:if="${#fields.hasErrors('membershipExpiryDate')}" th:errors="*{membershipExpiryDate}"></span>
+						</div>
+		
+		 				<div class="mb-4">
+							<label for="memberNotes" class="form-label">Member Notes:</label>
+							<textarea rows="3" class="form-control" th:field="*{memberNotes}" placeholder="Enter Notes"></textarea>
+							<span class="text-danger small" th:if="${#fields.hasErrors('memberNotes')}" th:errors="*{memberNotes}"></span>
+						</div>
+					</div>
+					<!-- Right of Member Form End -->
+					
+				</div>
+				
+				<div th:replace="../fragments/receipt :: member_receipt"></div>
+				
+				<button type="submit" th:unless="${member.id}" class="mb-4 btn btn-primary">Submit</button>
+				<button type="submit" th:if="${member.id}" class="mb-4 btn btn-primary">Update Member</button>
+				<a th:if="${member.id}" th:href="@{/receipt?memberId=}+${member.id}" class="mb-4 btn btn-primary float-end">Create Receipt</a>
+
+			</form>
+		</div>
+
+	</body>
+</html>

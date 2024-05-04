@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head></head>
+	<body>
+		<div th:fragment="login">
+			<br/>
+			<h2 class="text-dark">Login</h2>
+			<form th:action="@{/login}" method="post">
+				<div class="row">
+					<!-- Left of Member Form Start -->
+					<div class="col-sm-12">
+		 				<div class="mb-4">
+							<label for="username" class="form-label">Username:</label>
+							<input type="text" class="form-control" id="username" name="username" placeholder="username" required>
+						</div>
+						<div class="mb-4">
+							<label for="password" class="form-label">Password:</label>
+							<input type="password" class="form-control" id="password" name="password" placeholder="password" required>
+						</div>
+					</div>
+				</div>
+				<button type="submit" class="mb-4 btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head th:insert="../fragments/base :: headerTags">
+		<title>Error</title>
+	</head>
+	
+	<body>
+		<div class="container mt-4">
+			<div th:replace="../fragments/base :: header"></div>
+			<div class="row">
+				<div th:replace="../fragments/base :: status"></div>
+				<div class="col-sm-12">
+					<!-- No CONTENT. ERROR WILL BE LOADED DYNAMICALLY IN STATUS FRAGMENT -->
+				</div>
+		    </div>
+    		<div th:replace="../fragments/base :: footer"></div>
+		</div>
+		<br/>
+	</body>
+</html>

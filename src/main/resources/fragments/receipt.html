@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head></head>
+	<body>
+		<div th:fragment="receipt">
+			<br/>
+			<h2 class="text-dark">Add Receipt</h2>
+			<form th:action="@{/receipt/add}" method="post">
+				<div class="row" th:object="${receipt}">
+					
+					<div class="col-sm-12">
+
+						<input type="text" class="form-control" th:name="memberId" th:value="*{member.id}" hidden="hidden">
+
+		 				<div class="mb-4">
+			 				<label for="paymentFor" class="form-label">Payment For:</label>
+			 				<select class="form-select" th:field="*{paymentFor}" th:onchange="syncFromPaymentFor('paymentFor', [[(${lifetimeMembershipExpiryDate})]], [[(${annualMembershipExpiryDate})]])">
+								<option th:value="${paymentForCategory}" th:text="${paymentForCategory}" th:each="paymentForCategory : ${paymentForCategories}"></option>
+							</select>
+							<span class="text-danger small" th:if="${#fields.hasErrors('paymentFor')}" th:errors="*{paymentFor}"></span>
+						</div>
+						
+						<div class="mb-4">
+							<label for="amount" class="form-label">Amount:</label>
+							<input type="number" step="0.01" class="form-control" th:name="amount" th:id="amount" th:value="*{#numbers.formatDecimal(amount,1,2)}" placeholder="Max 7 integer digits & 2 decimal digits allowed">
+							<span class="text-danger small" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+						</div>
+						
+		 				<div class="mb-4">
+		 					<label for="paymentType" class="form-label">Payment Type:</label>
+							<select th:field="*{paymentType}" class="form-control">
+								<option th:value="${paymentTypeCategory}" th:text="${paymentTypeCategory}" th:each="paymentTypeCategory : ${paymentTypeCategories}"></option>
+							</select>
+							<span class="text-danger small" th:if="${#fields.hasErrors('paymentType')}" th:errors="*{paymentType}"></span>
+						</div>
+						
+		 				<div class="mb-4">
+							<label for="paymentDate" class="form-label">Payment Date:</label>
+							<input type="date" class="form-control" th:field="*{paymentDate}" th:max>
+							<span class="text-danger small" th:if="${#fields.hasErrors('paymentDate')}" th:errors="*{paymentDate}"></span>
+						</div>
+
+		 				<div class="mb-4">
+							<label for="receiptNotes" class="form-label">Payment Notes:</label>
+							<textarea rows="3" class="form-control" th:field="*{receiptNotes}" placeholder="Enter Notes"></textarea>
+							<span class="text-danger small" th:if="${#fields.hasErrors('receiptNotes')}" th:errors="*{receiptNotes}"></span>
+						</div>
+						
+					</div>
+				</div>
+				
+				<!-- FOR MEMBER - can't be inside th:object -->
+				<!-- <div th:unless="${receipt.member.isLifeMember == 'Yes'}" class="mb-4" th:id="membershipExpiryDateBlock" hidden="hidden"> ERRORS IN ADDING RECEIPT AFTER LIFETIME MEMBER -->
+				<div class="mb-4" th:id="membershipExpiryDateBlock" hidden="hidden">
+					<label for="membershipExpiryDate" class="form-label">Membership Expiry Date:</label>
+					<input type="date" class="form-control" th:id="membershipExpiryDate" th:name="membershipExpiryDate" th:value="${receipt.member.membershipExpiryDate}">
+				</div>
+				
+				<button type="submit" class="mb-4 btn btn-primary">Add Receipt</button>
+		
+			</form>
+		</div>
+		
+		
+		
+		<div th:fragment="memberInfo">
+			<div>
+				<label th:if="${receipt.member.membershipExpired}" class="fw-bold text-danger">Membership Expired? </label>
+				<p th:if="${receipt.member.membershipExpired}" class="fw-bold text-danger">Yes</p>
+				<label th:unless="${receipt.member.membershipExpired}" class="fw-bold text-primary">Membership Expired? </label>
+				<p th:unless="${receipt.member.membershipExpired}">No</p>
+				<label class="fw-bold">Member Since: </label>
+				<p th:text="${#temporals.format(receipt.member.memberSince, 'MMM dd, yyyy')}"></p>
+				<label class="fw-bold">Existing Membership Expiry Date: </label>
+				<p th:text="${#temporals.format(receipt.member.membershipExpiryDate, 'MMM dd, yyyy')}"></p>
+				<label class="fw-bold">Member Id: </label>
+				<p th:text="${receipt.member.id}"></p>
+				<label class="fw-bold">Name: </label>
+				<p th:text="${receipt.member.firstName + ' ' + receipt.member.lastName}"></p>
+				<label class="fw-bold">Phone Number: </label>
+				<p th:text="${receipt.member.phone}"></p>
+				<label class="fw-bold">Email: </label>
+				<p th:text="${receipt.member.email}"></p>
+				<label class="fw-bold">Address: </label>
+				<p th:text="${receipt.member.street + ', ' + receipt.member.city + ', ' + receipt.member.state + ', ' + receipt.member.zip}"></p>
+				<label class="fw-bold">Life Time Member? </label>
+				<p th:text="${receipt.member.isLifeMember}"></p>
+				<label class="fw-bold">Want Email? </label>
+				<p th:text="${receipt.member.wantEmail}"></p>
+				<label class="fw-bold">Want Mail? </label>
+				<p th:text="${receipt.member.wantMail}"></p>
+				<label class="fw-bold">Note:</label>
+				<p th:text="${receipt.member.memberNotes}"></p>
+			</div>
+		</div>
+		
+		
+		
+		<div th:if="${member.receipts[0].receiptNumber == null}" th:fragment="member_receipt">
+			<br/>
+			<h2 class="text-dark">Receipt Details</h2>
+			<div class="row" th:object=${member.receipts[0]}>
+				
+				<div class="col-sm-12">
+
+	 				<div class="mb-4">
+		 				<label for="paymentFor" class="form-label">Payment For:</label>
+		 				<input type="text" class="form-control" th:field="*{paymentFor}" readonly="readonly">
+						<span class="text-danger small" th:if="${#fields.hasErrors('paymentFor')}" th:errors="*{paymentFor}"></span>
+					</div>
+						
+					<div class="mb-4">
+						<label for="amount" class="form-label">Amount:</label>
+						<input type="number" step="0.01" class="form-control" th:field="*{amount}" th:value="*{#numbers.formatDecimal(amount,1,2)}" placeholder="Max 7 integer digits & 2 decimal digits allowed">
+						<span class="text-danger small" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+					</div>
+					
+	 				<div class="mb-4">
+	 					<label for="paymentType" class="form-label">Payment Type:</label>
+							<select th:field="*{paymentType}" class="form-control">
+								<option th:value="${paymentTypeCategory}" th:text="${paymentTypeCategory}" th:each="paymentTypeCategory : ${paymentTypeCategories}"></option>
+							</select>
+						<span class="text-danger small" th:if="${#fields.hasErrors('paymentType')}" th:errors="*{paymentType}"></span>
+					</div>
+					
+	 				<div class="mb-4">
+						<label for="paymentDate" class="form-label">Payment Date:</label>
+						<input type="date" class="form-control" th:field="*{paymentDate}" th:max>
+						<span class="text-danger small" th:if="${#fields.hasErrors('paymentDate')}" th:errors="*{paymentDate}"></span>
+					</div>
+
+	 				<div class="mb-4">
+						<label for="receiptNotes" class="form-label">Payment Notes:</label>
+						<textarea rows="3" class="form-control" th:field="*{receiptNotes}" placeholder="Enter Notes"></textarea>
+						<span class="text-danger small" th:if="${#fields.hasErrors('receiptNotes')}" th:errors="*{receiptNotes}"></span>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+	</body>
+</html>

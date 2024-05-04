@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head></head>
+	<body>
+		<div th:fragment="memberLookup">
+			<div>
+				<br/>
+				<h2 class="text-dark">Member Lookup</h2>
+				<div class="col-sm-12">
+		    		<form th:action="@{/member/lookup}" method="post">
+			 				<div class="mb-4">
+								<label for="memberId" class="form-label">Member Id:</label>
+								<input type="number" class="form-control" name="memberId" id="memberId" placeholder="Enter Member Id">
+		 					</div>
+			 				<div class="mb-4">
+								<label for="phone" class="form-label">Phone Number:</label>
+								<input type="number" class="form-control" name="phone" id="phone" maxlength="10" placeholder="Enter 10 Digit Phone" min="1000000000" max="9999999999">
+		 					</div>
+			 				<div class="mb-4">
+								<label for="firstName" class="form-label">First Name:</label>
+								<input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter First Name">
+		 					</div>
+			 				<div class="mb-4">
+								<label for="lastName" class="form-label">Last Name:</label>
+								<input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter Last Name">
+		 					</div>
+							<button type="submit" class="btn btn-primary">Submit</button>	 					
+					</form>
+					<br/>
+					<label class="text-danger">Note:</label>
+					<p class="text-secondary">To add or view receipts, first search existing member.</p>
+					<label class="text-danger">Search Priority:</label>
+					<p class="text-secondary">Member Id<br/>Phone Number<br/>Full Name<br/>First Name<br/>Last Name</p>
+			    </div>
+		    </div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head th:insert="../fragments/base :: headerTags">
+		<title>Receipt</title>
+	</head>
+	
+	<body>
+		<div id="annualMembershipAmount" th:text="${annualMembershipAmount}" hidden="hidden"></div>
+		<div id="lifetimeMembershipAmount" th:text="${lifetimeMembershipAmount}" hidden="hidden"></div>
+		<div class="container mt-4">
+			<div th:replace="../fragments/base :: header"></div>
+			
+			<div class="row">
+				<div th:replace="../fragments/base :: status"></div>
+				
+				<div class="col-sm-8">
+					<div th:replace="../fragments/receipt :: receipt"></div>
+				</div>
+				
+ 				<div class="col-sm-1 border-1 border-muted border-end">
+			    </div>
+
+				<div class="col-sm-3">
+					<div th:replace="../fragments/receipt :: memberInfo"></div>
+				</div>
+		    </div>
+
+		    <div th:replace="../fragments/base :: footer"></div>
+		    <div th:replace="../fragments/base :: dataTable"></div>
+		</div>
+		<br/>
+	</body>
+</html>
