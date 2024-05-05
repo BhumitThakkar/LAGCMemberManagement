@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 				xmlns:sec="http://www.thymeleaf.org/thymleaf-extras-springsecurity5">
-	<head th:fragment="headerTags">
-		<meta charset="ISO-8859-1">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- Favicon -->
-		<link rel="icon" sizes="72x72" href="/img/logo.png" type="image/png">
-		<!-- For Bootstrap 5 CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
-		<!-- For Icons -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" rel="stylesheet"/>
-		<!-- For Bootstrap 5 DataTable CSS  -->
-		<link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+	<head>
+		<th:block th:fragment="headerTags">
+			<meta charset="ISO-8859-1">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<!-- Favicon -->
+			<link rel="icon" sizes="72x72" href="/img/logo.png" type="image/png">
+			<!-- For Bootstrap 5 CSS -->
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+			<!-- For Icons -->
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css" rel="stylesheet"/>
+			<!-- For Bootstrap 5 DataTable CSS  -->
+			<link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+			<!-- Custom CSS  -->
+			<link href="/css/lagc.css" rel="stylesheet"/>
+		</th:block>
 	</head>
 	<body>
 		<div th:fragment="header" id="header" class="mt-2 mb-4 p-2">

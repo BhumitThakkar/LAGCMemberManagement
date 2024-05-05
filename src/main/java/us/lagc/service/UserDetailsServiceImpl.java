@@ -25,6 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		this.userRepo = userRepo;
 	}
 
+	/*UNCOMMENT BELOW METHOD IF LOGGING IN USING USERNAME*/
+	/*
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepo.findByUsername(username);
@@ -33,6 +35,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("Username " + username + " not found");
 		} else {
 			logger.info("Username " + username + " found in databse");
+		}
+		return user;
+	}
+	*/
+	
+	/*UNCOMMENT BELOW METHOD IF LOGGING IN USING EMAIL*/
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		User user = userRepo.findByEmail(email);
+		if(user == null) {
+			logger.error("Email " + email + " not found in database");
+			throw new UsernameNotFoundException("Email " + email + " not found");
+		} else {
+			logger.info("Email " + email + " found in database");
 		}
 		return user;
 	}

@@ -110,6 +110,12 @@
 			<version>8.3.0</version>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-c3p0 -->
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>7.0.0.Alpha2</version>
+		</dependency>
 		<!--
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>

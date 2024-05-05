@@ -115,8 +115,10 @@ public class LagcMemberManagementApplication extends WebMvcConfigurationSupport 
 		.formLogin( form -> form
 				.loginPage("/login")
 				.defaultSuccessUrl("/member", true)
+				.usernameParameter("email")														// remove this if logging in using username instead of email
 				.permitAll()
 				)
+				
 		.logout( logout -> logout
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.invalidateHttpSession(false)													// so that it will not overwrite next url to invalidSessionUrl provided above
